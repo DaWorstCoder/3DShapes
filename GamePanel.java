@@ -2,70 +2,44 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-class GamePanel extends JPanel implements ActionListener{
-  static int width = 500;
-  static int height = 500;
-  
-  static Timer timer;
-  static int delay = 10;
-  int size = 1;
-  Point3D[] cubeArray = {
-    new Point3D(1, -1, -1),
-    new Point3D(1, -1, 1),
-    new Point3D(1, 1, 1),
-    new Point3D(1, 1, -1),
-    new Point3D(-1, -1, -1),
-    new Point3D(-1, -1, 1),
-    new Point3D(-1, 1, 1),
-    new Point3D(-1, 1, -1)
-  };
-    Point3D[] cubeArrayTest = {
-    new Point3D(1, -1, -1),
-    new Point3D(1, -1, 1),
-    new Point3D(1, 1, 1),
-    new Point3D(1, 1, -1),
-    new Point3D(-1, -1, -1),
-    new Point3D(-1, -1, 1),
-    new Point3D(-1, 1, 1),
-    new Point3D(-1, 1, -1)
-  };
+class GamePanel extends JPanel implements ActionListener {
+    static int width = 500;
+    static int height = 500;
 
-  
-  Cube outsideCube = new Cube(cubeArray, 100, Color.cyan);
-  Cube insideCube = new Cube(cubeArrayTest, 50, Color.blue);
-  
-  GamePanel() {
-    this.setPreferredSize(new Dimension(width, height));
-    this.setBackground(Color.black);
-    this.setFocusable(true);
+    static Timer timer;
+    static int delay = 10;
 
-    timer = new Timer(delay, this);
-    timer.start();
+    Cube outsideCube = new Cube(100, Color.blue);
+    Diamond diam = new Diamond(75, .75, .5, 1, Color.cyan);
+
+    GamePanel() {
+        this.setPreferredSize(new Dimension(width, height));
+        this.setBackground(Color.black);
+        this.setFocusable(true);
+
+        timer = new Timer(delay, this);
+        timer.start();
+
+        // Sets diamond straight
+        diam.rotate(90, false, 0, false, 0, false);
     }
 
-  public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         draw(g);
     }
 
-  void draw(Graphics g) {
-    
-      outsideCube.render(g);
-      insideCube.render(g);
-
-    // g.setColor(Color.white);
-    // for (int i = 0; i < 8; i++) {
-    //   g.drawLine(outsideCube.points2D()[i].x + w2, outsideCube.points2D()[i].y + h2, insideCube.points2D()[i].x + w2, insideCube.points2D()[i].y + h2);
-    // }
+    void draw(Graphics g) {
+        outsideCube.render(g);
+        diam.render(g);
     }
 
-
-  @Override
+    // Use this if you want something to happen repeatedly
+    @Override
     public void actionPerformed(ActionEvent e) {
-        outsideCube.rotate(1, true, 1, true, 0, false);
-        insideCube.rotate(1, false, 1, true, 0, true);
+        outsideCube.rotate(1, true, 0, true, 1, false);
+        diam.rotate(0, false, 1, true, 0, false);
         repaint();
-        
 
     }
 }
